@@ -13,12 +13,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MyShop | Boutique en ligne Next.js",
-  description: "Découvrez MyShop, une boutique en ligne moderne créée avec Next.js. Achetez vos produits favoris facilement et rapidement.",
-  keywords: ["e-commerce", "Next.js", "boutique en ligne", "achats", "produits"],
+  title: "MyShop | Next.js Online Store",
+  description: "Discover MyShop, a modern online store built with Next.js. Shop your favorite products easily and quickly.",
+  keywords: ["e-commerce", "Next.js", "online store", "shopping", "products"],
   openGraph: {
-    title: "MyShop | Boutique en ligne Next.js",
-    description: "Explorez une boutique en ligne rapide et élégante développée avec Next.js.",
+    title: "MyShop | Next.js Online Store",
+    description: "Explore a fast and stylish online store developed with Next.js.",
     url: "https://myshop.example.com",
     siteName: "MyShop",
     images: [
@@ -26,10 +26,10 @@ export const metadata: Metadata = {
         url: "/logo.png",
         width: 1200,
         height: 630,
-        alt: "Aperçu de MyShop",
+        alt: "MyShop Preview",
       },
     ],
-    locale: "fr_FR",
+    locale: "en_US",
     type: "website",
   },
 };

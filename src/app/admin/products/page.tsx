@@ -86,7 +86,7 @@ async function ProductsTable() {
                       Download
                     </a>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem asChild>
                     <Link href={`/admin/products/${product.id}/edit`}>
                       Edit
                     </Link>

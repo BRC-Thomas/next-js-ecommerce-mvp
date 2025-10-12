@@ -6,18 +6,20 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { formatCurrency } from "@/lib/formatters";
 import { useActionState, useState } from "react";
-import addProduct from "../../_action/products";
 import { useFormStatus } from "react-dom";
+import { Product } from "@/generated/prisma";
+import Image from "next/image";
+import addProduct, { updateProduct } from "../../_action/products";
 
-export default function ProductForm() {
-  const [error, action] = useActionState(addProduct, "")
-  const [priceInCents, setPriceInCents] = useState<number>()
+export default function ProductForm({product}: {product?:Product | null}) {
+  const [error, action] = useActionState(product == null ? addProduct : updateProduct.bind(null, product.id), "")
+  const [priceInCents, setPriceInCents] = useState<number | undefined>(product?.priceInCents)
 
   return (
     <form action={action} className="space-y-8">
       <div className="space-y-2">
         <Label htmlFor="name">Name</Label>
-        <Input type="text" id="name" name="name" required></Input>
+        <Input type="text" id="name" name="name" required defaultValue={product?.name || ""}></Input>
         {error.properties?.name && <div className="text-destructive">{error.properties?.name?.errors[0]}</div>}
       </div>
       <div className="space-y-2">
@@ -29,20 +31,27 @@ export default function ProductForm() {
       </div>
       <div className="space-y-2">
         <Label htmlFor="description">Description</Label>
-        <Textarea id="description" name="description" required />
+        <Textarea id="description" name="description" required defaultValue={product?.description || ""}/>
         {error.properties?.description && <div className="text-destructive">{error.properties?.description?.errors[0]}</div>}
         
       </div>
       <div className="space-y-2">
         <Label htmlFor="file">File</Label>
-        <Input type="file" id="file" name="file" required></Input>
+        <Input type="file" id="file" name="file" required={product == null} />
+        {product != null && <div className="text-muted-foreground">{product.filePath}</div>}
         {error.properties?.file && <div className="text-destructive">{error.properties?.file?.errors[0]}</div>}
 
       </div>
       <div className="space-y-2">
-        <Label htmlFor="imagePath">Image</Label>
-        <Input type="file" id="imagePath" name="imagePath" required></Input>
-        {error.properties?.imagePath && <div className="text-destructive">{error.properties?.imagePath?.errors[0]}</div>}
+        <Label htmlFor="image">Image</Label>
+        <Input type="file" id="image" name="image" required={product == null} />
+        {product != null && <Image
+          src={product.imagePath}
+          height="400"
+          width="400"
+          alt="Product image"
+        />}
+        {error.properties?.image && <div className="text-destructive">{error.properties?.image.errors[0]}</div>}
       </div>
       <SubmitButton />
     </form>

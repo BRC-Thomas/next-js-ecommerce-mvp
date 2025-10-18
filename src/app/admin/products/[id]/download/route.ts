@@ -23,5 +23,3 @@ export async function GET(req: NextRequest, { params: { id } }: { params: { id: 
   })
   
 }
-
-// TODO middleware admin

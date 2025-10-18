@@ -1,6 +1,5 @@
 import prisma from "@/db/db";
 import fs from "fs/promises"
-import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -16,10 +15,12 @@ export async function GET(req: NextRequest, { params: { id } }: { params: { id: 
   const file = await fs.readFile(product.filePath)
   const extension = product.filePath.split(".").pop()
 
-  return new NextResponse(file,{ headers: {
-    "Content-Disposition": `attacjment; filename="${product.name}.${extension}"`,
-    "Content-Length:": size.toString(),
-  }})
+  return new NextResponse(file, {
+    headers: {
+      "Content-Disposition": `attachment; filename="${product.name}.${extension}"`,
+      "Content-Length": size.toString(),
+    }
+  })
   
 }
 

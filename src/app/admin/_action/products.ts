@@ -63,7 +63,11 @@ export async function toggleProductAvailability(id: string, isAvailableForPurcha
   await prisma.product.update({
     where: { id }, data: {
     isAvailableForPurchase
-  }})
+    }
+  })
+  
+  revalidatePath("/")
+  revalidatePath("/products")
 }
 
 export async function deleteProduct(id: string) {
@@ -73,6 +77,9 @@ export async function deleteProduct(id: string) {
   
   await fs.unlink(product.filePath)
   await fs.unlink(`public${product.imagePath}`)
+
+  revalidatePath("/")
+  revalidatePath("/products")
 }
 
 export async function updateProduct(id: string, prevState: unknown, formData: FormData) {
@@ -113,6 +120,9 @@ export async function updateProduct(id: string, prevState: unknown, formData: Fo
       imagePath,
     }
   })
+
+  revalidatePath("/")
+  revalidatePath("/products")
 
   redirect("/admin/products")
 }

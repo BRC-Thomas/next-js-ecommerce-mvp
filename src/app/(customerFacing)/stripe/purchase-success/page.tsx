@@ -46,9 +46,17 @@ export default async function SuccesPage({
            <div className="line-clamp-3 text-muted-foreground">
              {product.description}
           </div>
-          <Button className="mt-4" size="lg" asChild>{isSuccess ? <a>Download</a> : <Link href={`/products/${product.id}/purchase`}><Tarea></Tarea>ry again</Link>}</Button>
+          <Button className="mt-4" size="lg" asChild>{isSuccess ? <a href={`/products/download/${await createDownloadVerification(product.id)}`}>Download</a> : <Link href={`/products/${product.id}/purchase`}>Try again</Link>}</Button>
          </div>
        </div>
      </div>
    );
+}
+
+async function createDownloadVerification(productId:string) {
+  return (await prisma.downloadVerification.create({
+    data: {
+      productId,
+      expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24)
+  }})).id
 }

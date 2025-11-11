@@ -85,10 +85,12 @@ function Form({ priceInCents, productId }: { priceInCents: number, productId: st
       return
     }
 
-    stripe.confirmPayment({
-      elements, confirmParams: {
-      return_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/stripe/purchase-success`
-      }
+    await stripe.confirmPayment({
+  elements,
+  confirmParams: {
+    return_url: process.env.NEXT_PUBLIC_SERVER_URL + "/stripe/purchase-success",
+    receipt_email: email, // ensure this is set
+  },
     }).then(({ error }) => {
       if (error.type === "card_error" || error.type === "validation_error") {
         setErrorMessage(error.message)
@@ -107,7 +109,7 @@ function Form({ priceInCents, productId }: { priceInCents: number, productId: st
       <CardContent>
         <PaymentElement />
         <div className="mt-4">
-          <LinkAuthenticationElement onChange={e => setEmail(e.value.email)}/>
+          <LinkAuthenticationElement onChange={(e) => setEmail(e.value.email)} />
         </div>
       </CardContent>
       <CardFooter>

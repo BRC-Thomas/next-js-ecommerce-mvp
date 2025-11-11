@@ -5,7 +5,8 @@ import CheckoutForm from "./_components/CheckoutForm"
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string)
 
-export default async function PurchasePage({ params: { id } }: { params: { id: string } }) {
+export default async function PurchasePage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const product = await prisma.product.findUnique({
     where: {id}
   })
@@ -15,7 +16,7 @@ export default async function PurchasePage({ params: { id } }: { params: { id: s
   const paymentIntent = await stripe.paymentIntents.create({
     amount: product.priceInCents,
     currency: "EUR",
-    metadata: {producId: product.id}
+    metadata: {productId: product.id},
   })
 
   if (paymentIntent.client_secret == null) {

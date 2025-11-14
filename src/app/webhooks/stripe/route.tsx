@@ -2,6 +2,7 @@ import prisma from "@/db/db"
 import { NextRequest, NextResponse } from "next/server"
 import Stripe from "stripe"
 import { Resend } from "resend"
+import PurchaseReceiptEmail from "@/email/PurchaseReceipt"
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string)
 const resend = new Resend(process.env.RESEND_API_KEY as string)
@@ -33,7 +34,7 @@ export async function POST(req: NextRequest) {
       event = JSON.parse(body) as Stripe.Event
     }
 
-    if (event.type === "charge.succeeded") {
+    if (event.type === "charge.succeeded" ||event.type  ===  "payment_intent.succeeded") {
       const charge = event.data.object as Stripe.Charge
       const productId = charge.metadata?.productId
       const email = charge.billing_details?.email
@@ -69,7 +70,7 @@ export async function POST(req: NextRequest) {
         from: `Support <${process.env.SENDER_EMAIL}>`,
         to: email,
         subject: "Order Confirmation",
-        react: <h1>Order Confirmed</h1>,
+        react: <PurchaseReceiptEmail order={order} product={product} downloadVerificationId={downloadVerification.id} />
       })
     }
 

@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
       event = JSON.parse(body) as Stripe.Event
     }
 
-    if (event.type === "charge.succeeded") {
+    if (event.type === "charge.succeeded" ||event.type  ===  "payment_intent.succeeded") {
       const charge = event.data.object as Stripe.Charge
       const productId = charge.metadata?.productId
       const email = charge.billing_details?.email

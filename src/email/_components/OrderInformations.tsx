@@ -35,7 +35,7 @@ export default function OrderInformations({ order, product, downloadVerification
           </Column>
           <Column>
             <Text className="mb-0 text-gray-500 whitespace-nowrap text-nowrap mr-4">Price Paid</Text>
-            <Text className="mt-0 mr-4">{formatCurrency(order.pricePaidInCents)}</Text>
+            <Text className="mt-0 mr-4">{formatCurrency(order.pricePaidInCents / 100)}</Text>
           </Column>
         </Row>
       </Section>

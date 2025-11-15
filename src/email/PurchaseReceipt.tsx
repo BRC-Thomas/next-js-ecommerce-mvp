@@ -1,7 +1,6 @@
 import { Body, Container, Head, Heading, Html, Preview, Tailwind } from "@react-email/components";
 import OrderInformations from "./_components/OrderInformations";
 
-
 type PurchaseReceiptEmailProps = {
   product: {
     name: string,
@@ -15,7 +14,6 @@ type PurchaseReceiptEmailProps = {
    },
    downloadVerificationId: string
 }
-console.log("Server URL:", process.env.NEXT_PUBLIC_SERVER_URL)
 
 PurchaseReceiptEmail.PreviewProps = {
   product: {
